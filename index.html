@@ -1,90 +1,97 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Valentine</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin: 30px; }
-    img { width: 520px; max-width: 95%; height: auto; display: block; margin: 0 auto 18px; }
-    button { padding: 10px 16px; margin: 6px; font-size: 16px; cursor: pointer; }
-    #resultText { margin-top: 14px; font-size: 18px; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Valentine</title>
+
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; margin: 30px; }
+  img { width: 520px; max-width: 95%; }
+  button { padding: 10px 16px; margin: 6px; font-size: 16px; cursor: pointer; }
+  #resultText { margin-top: 14px; font-size: 18px; }
+
+  /* Hearts */
+  .heart {
+    position: fixed;
+    top: -20px;
+    font-size: 20px;
+    animation: fall linear forwards;
+    pointer-events: none;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(110vh);
+      opacity: 0;
+    }
+  }
+</style>
 </head>
+
 <body>
-  <!-- Main image -->
-  <img id="mainImg" src="yesno.png" alt="Yes or No">
 
-  <!-- Prompt -->
-  <h2 id="prompt">Will you be my Valentine?</h2>
+<img id="mainImg" src="yesno.png">
+<h2>babyyyyy... will you be my valentine?</h2>
 
-  <!-- Buttons -->
-  <div>
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
-  </div>
+<button id="yesBtn">Yes</button>
+<button id="noBtn">No</button>
 
-  <div id="resultText"></div>
+<div id="resultText"></div>
 
-  <script>
-    const mainImg = document.getElementById("mainImg");
-    const prompt = document.getElementById("prompt");
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const resultText = document.getElementById("resultText");
+<script>
+const mainImg = document.getElementById("mainImg");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const resultText = document.getElementById("resultText");
 
-    // Hover texts for "No"
-    const noHoverTexts = [
-      "i hate peny",
-      "im not getting this nursing degree",
-      "i will forget to feed my fish",
-      "i hate u brook",
-      "no more flowers for me"
-    ];
-    let hoverIndex = 0;
+// No hover text
+const noTexts = [
+  "i hate peny",
+  "im not getting this nursing degree",
+  "i will forget to feed my fish",
+  "i hate u brook",
+  "no more flowers for me"
+  "i don't love my grandma"
+  "mi no love mi mama"
+];
 
-    noBtn.addEventListener("mouseenter", () => {
-      noBtn.textContent = noHoverTexts[hoverIndex % noHoverTexts.length];
-      hoverIndex++;
-    });
+let i = 0;
+noBtn.onmouseenter = () => {
+  noBtn.textContent = noTexts[i % noTexts.length];
+  i++;
+};
+noBtn.onmouseleave = () => noBtn.textContent = "No";
 
-    noBtn.addEventListener("mouseleave", () => {
-      noBtn.textContent = "No";
-    });
+// YES CLICK
+yesBtn.onclick = () => {
+  mainImg.src = "smile.png";
+  resultText.textContent = "i love you so so much bebe <3";
+  yesBtn.disabled = true;
+  noBtn.disabled = true;
 
-    // Yes click: show smile.png + message
-    yesBtn.addEventListener("click", () => {
-      mainImg.src = "smile.png";
-      prompt.textContent = ""; // optional: remove the question
-      resultText.textContent = "i love you so so much bebe";
-      yesBtn.disabled = true;
-      noBtn.disabled = true;
-    });
+  // spawn falling hearts
+  for (let k = 0; k < 80; k++) {
+    setTimeout(spawnHeart, k * 30);
+  }
+};
 
-    // No click: show a simple 404 page
-    noBtn.addEventListener("click", () => {
-      document.open();
-      document.write(`
-        <!doctype html>
-        <html lang="en">
-        <head>
-          <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <title>404 Not Found</title>
-          <style>
-            body { font-family: Arial, sans-serif; text-align: center; margin: 60px; }
-            h1 { font-size: 48px; margin-bottom: 10px; }
-            p { font-size: 18px; }
-          </style>
-        </head>
-        <body>
-          <h1>404</h1>
-          <p>Page not found.</p>
-        </body>
-        </html>
-      `);
-      document.close();
-    });
-  </script>
+// NO CLICK → 404
+noBtn.onclick = () => {
+  document.body.innerHTML = "<h1>404</h1><p>Page not found.</p>";
+};
+
+// Create heart
+function spawnHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.textContent = "💗";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}
+</script>
+
 </body>
 </html>
