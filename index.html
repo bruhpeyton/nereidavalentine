@@ -28,7 +28,7 @@
 <body>
 
 <img id="mainImg" src="yesno.png" alt="Yes or No guy">
-<h2>babyyyyy... will you be my valentine?</h2>
+<h2 id="question">babyyyyy... will you be my valentine?</h2>
 
 <button id="yesBtn">Yes</button>
 <button id="noBtn">No</button>
@@ -40,6 +40,9 @@ const mainImg = document.getElementById("mainImg");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const resultText = document.getElementById("resultText");
+const question = document.getElementById("question");
+
+let yesClicked = false;
 
 const noTexts = [
   "i hate peny",
@@ -53,29 +56,45 @@ const noTexts = [
 
 let i = 0;
 
-noBtn.onmouseenter = () => {
+function onNoEnter() {
+  if (yesClicked) return;
   noBtn.textContent = noTexts[i % noTexts.length];
   i++;
-};
+}
 
-noBtn.onmouseleave = () => {
+function onNoLeave() {
+  if (yesClicked) return;
   noBtn.textContent = "No";
-};
+}
 
-yesBtn.onclick = () => {
+noBtn.addEventListener("mouseenter", onNoEnter);
+noBtn.addEventListener("mouseleave", onNoLeave);
+
+noBtn.addEventListener("click", () => {
+  if (yesClicked) return;
+  document.body.innerHTML = "<h1>404</h1><p>Page not found.</p>";
+});
+
+yesBtn.addEventListener("click", () => {
+  if (yesClicked) return;
+  yesClicked = true;
+
   mainImg.src = "smile.png";
   resultText.textContent = "i love you so so much bebe <3";
-  yesBtn.disabled = true;
+  question.textContent = "";
+
+  noBtn.style.background = "#ccc";
+  noBtn.style.color = "#666";
   noBtn.disabled = true;
+  noBtn.textContent = "No";
+
+  noBtn.removeEventListener("mouseenter", onNoEnter);
+  noBtn.removeEventListener("mouseleave", onNoLeave);
 
   for (let k = 0; k < 80; k++) {
     setTimeout(spawnHeart, k * 30);
   }
-};
-
-noBtn.onclick = () => {
-  document.body.innerHTML = "<h1>404</h1><p>Page not found.</p>";
-};
+});
 
 function spawnHeart() {
   const heart = document.createElement("div");
