@@ -7,11 +7,10 @@
 
 <style>
   body { font-family: Arial, sans-serif; text-align: center; margin: 30px; }
-  img { width: 520px; max-width: 95%; }
+  img { width: 520px; max-width: 95%; height: auto; }
   button { padding: 10px 16px; margin: 6px; font-size: 16px; cursor: pointer; }
   #resultText { margin-top: 14px; font-size: 18px; }
 
-  /* Hearts */
   .heart {
     position: fixed;
     top: -20px;
@@ -21,17 +20,14 @@
   }
 
   @keyframes fall {
-    to {
-      transform: translateY(110vh);
-      opacity: 0;
-    }
+    to { transform: translateY(110vh); opacity: 0; }
   }
 </style>
 </head>
 
 <body>
 
-<img id="mainImg" src="yesno.png">
+<img id="mainImg" src="yesno.png" alt="Yes or No guy">
 <h2>babyyyyy... will you be my valentine?</h2>
 
 <button id="yesBtn">Yes</button>
@@ -45,7 +41,6 @@ const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const resultText = document.getElementById("resultText");
 
-// No hover text
 const noTexts = [
   "i hate peny",
   "im not getting this nursing degree",
@@ -57,31 +52,31 @@ const noTexts = [
 ];
 
 let i = 0;
+
 noBtn.onmouseenter = () => {
   noBtn.textContent = noTexts[i % noTexts.length];
   i++;
 };
-noBtn.onmouseleave = () => noBtn.textContent = "No";
 
-// YES CLICK
+noBtn.onmouseleave = () => {
+  noBtn.textContent = "No";
+};
+
 yesBtn.onclick = () => {
   mainImg.src = "smile.png";
   resultText.textContent = "i love you so so much bebe <3";
   yesBtn.disabled = true;
   noBtn.disabled = true;
 
-  // spawn falling hearts
   for (let k = 0; k < 80; k++) {
     setTimeout(spawnHeart, k * 30);
   }
 };
 
-// NO CLICK → 404
 noBtn.onclick = () => {
   document.body.innerHTML = "<h1>404</h1><p>Page not found.</p>";
 };
 
-// Create heart
 function spawnHeart() {
   const heart = document.createElement("div");
   heart.className = "heart";
